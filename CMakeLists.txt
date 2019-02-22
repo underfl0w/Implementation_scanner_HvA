@@ -3,4 +3,4 @@ project(Implementation_Scanner_)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Implementation_Scanner_ main.cpp)
+add_executable(Implementation_Scanner_ src/main.cpp src/config.cpp src/config.h)
