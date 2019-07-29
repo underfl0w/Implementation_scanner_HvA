@@ -35,9 +35,15 @@
     },
 
     "Files": {
-      "Files": 1,
+      "Files": 3,
       "0": {
         "fileName": "normal.otd"
+      },
+      "1": {
+        "fileName": "juiceList.xlsx"
+      },
+      "2": {
+        "fileName": "Notes.txt"
       }
     }
   }

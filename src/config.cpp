@@ -22,7 +22,7 @@ void Config::Reload() {
     {
         json j = json::parse(fileStream);
         auto wow = j["directories"]["Folders"]["Recursive"]["Folders"].get<int>();
-        std::cout << wow;
+        Microseconds = wow;
         loadFolders(j);
 
     }
@@ -43,8 +43,18 @@ void Config::loadFolders(json j) {
     for (int i = 0; i < recursiveFolders; ++i) {
         recursiveDirectories.push_back(j["directories"]["Folders"]["Recursive"][std::to_string(i)]["path"].get<std::string>());
     }
-    for (int i = 0; i < recursiveFolders; ++i) {
+    for (int i = 0; i < nonRecursiveFolders; ++i) {
         nonRecursiveDirectories.push_back(j["directories"]["Folders"]["NonRecursive"][std::to_string(i)]["path"].get<std::string>());
+    }
+    loadWhiteList(j);
+}
+
+void Config::loadWhiteList(json j) {
+    auto whitelist = j["Whitelist"]["Files"]["Files"].get<int>();
+    for (int i = 0; i < whitelist; ++i) {
+        WhiteListedFiles[
+        (j["Whitelist"]["Files"][std::to_string(i)]["fileName"].get<std::string>())] = 10
+        ;
     }
 
 }
