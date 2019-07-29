@@ -1,0 +1,44 @@
+{
+  "Microseconds": 4,
+
+  "directories": {
+    "Folders": {
+      "Recursive": {
+        "Folders": 2,
+        "0": {
+          "Name": "Big secret folder",
+          "path": "/home/user2/topSecret/"
+        },
+        "1": {
+          "Name": "Little secret folder",
+          "path": "/home/user2/littleSecret/"
+        }
+      },
+      "NonRecursive": {
+        "Folders": 1,
+        "0":{
+          "Name": "User folder",
+          "path": "/home/user2/documents/"
+        }
+      }
+    }
+  },
+
+  "Whitelist": {
+    "Folders": {
+      "folders": 1,
+      "0": {
+        "Name": "Fast changing folder",
+        "path": "/home//user2/topSecret/liveStream/",
+        "recursive": "1"
+      }
+    },
+
+    "Files": {
+      "Files": 1,
+      "0": {
+        "fileName": "normal.otd"
+      }
+    }
+  }
+}
