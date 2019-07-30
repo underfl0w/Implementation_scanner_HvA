@@ -28,38 +28,41 @@ void scan::load_setting() {
 
 
 void scan::scan_directory() {
+    std::vector<std::string> dataCollector;
+
+    // Scan all the non Recursive directories first.
     for (int i = 0; i < conf.nonRecursiveDirectories.size(); ++i) {
-        for(auto& p: std::filesystem::directory_iterator(conf.nonRecursiveDirectories[i])) {
-            std::cout << p.path() << '\n';
-            std::cout << p.is_regular_file() << '\n';
-            if(p.is_directory() == 0){
-
-                std::ifstream f(p.path(), std::ios::binary);
-                std::vector<unsigned char> s(picosha2::k_digest_size);
-                std::string hexHash;
-                picosha2::hash256(f, s.begin(), s.end());
-                picosha2::bytes_to_hex_string(s.begin(), s.end(), hexHash);
-                std::cout << hexHash;
-
-                // Convert the path to a char array.
-                char cstr[std::string(p.path()).size() + 1];
-                strcpy(cstr, p.path().c_str());
-                getFileCreationTime(cstr);
+        for (auto &p: std::filesystem::directory_iterator(conf.nonRecursiveDirectories[i])) {
+            if (p.is_regular_file() == 1) {
+                if (conf.WhiteListedFiles.count(p.path().filename()) != 0) {
+                    // File exists in whitelist.
+                    // Lets do nothing.
+                } else {
+                    //Get the hash from the file
+                    std::string path = p.path();
+                   dataCollector.push_back(path +","+fileHashing(p.path()));
+                }
             }
         }
     }
-    //conf.recursiveDirectories
-    // Scan the files given in path
+    // Time to scan the recursive directories.
+    for (int i = 0; i < conf.nonRecursiveDirectories.size(); ++i) {
 
-    // check config for whitelist
+        for (auto &p: std::filesystem::recursive_directory_iterator(conf.recursiveDirectories[i])) {
+            if (p.is_regular_file() == 1) {
+                if (conf.WhiteListedFiles.count(p.path().filename()) != 0) {
+                    // File exists in whitelist.
+                    // Lets do nothing.
+                } else {
+                    //Get the hash from the file
+                    std::string path = p.path();
+                    dataCollector.push_back(path +","+fileHashing(p.path()));
+                }
+            }
+        }
+        compress::compressFile(dataCollector);
 
-    // calculate hashes
-
-    // last modification time
-
-    // if settings is recursive, scan directories inside current directory
-
-    // return results
+    }
 }
 
 std::string scan::getFileCreationTime(char *path) {
@@ -67,6 +70,28 @@ std::string scan::getFileCreationTime(char *path) {
     stat(path, &attr);
     return (ctime(&attr.st_mtime));
 }
+
+std::string scan::fileHashing(std::string p){
+        // hashing magic happens here.
+        //Get the hash from the file
+        std::ifstream f(p, std::ios::binary);
+        std::vector<unsigned char> s(picosha2::k_digest_size);
+        std::string hexHash;
+        picosha2::hash256(f, s.begin(), s.end());
+        picosha2::bytes_to_hex_string(s.begin(), s.end(), hexHash);
+
+        // Convert the path to a char array.
+        char cstr[std::string(p).size() + 1];
+        strcpy(cstr, p.c_str());
+
+        // Combine last modification date and hash into a single hash.
+        std::string src_str = hexHash + getFileCreationTime(cstr);
+        std::vector<unsigned char> hash(picosha2::k_digest_size);
+        picosha2::hash256(src_str.begin(), src_str.end(), hash.begin(), hash.end());
+        return picosha2::bytes_to_hex_string(hash.begin(), hash.end());
+
+    }
+
 
 
 

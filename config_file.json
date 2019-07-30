@@ -35,7 +35,7 @@
     },
 
     "Files": {
-      "Files": 3,
+      "Files": 4,
       "0": {
         "fileName": "normal.otd"
       },
@@ -44,6 +44,9 @@
       },
       "2": {
         "fileName": "Notes.txt"
+      },
+      "3": {
+        "fileName": "note.txt"
       }
     }
   }
