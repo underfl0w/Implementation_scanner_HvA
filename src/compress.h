@@ -6,8 +6,9 @@
 #define IMPLEMENTATION_SCANNER__COMPRESS_H
 #include <stdlib.h>
 #include <fstream>
-#include "../include/zipper/zipper/zipper.h"
-
+#include <zipper/zipper.h>
+#include <zipper/unzipper.h>
+#include <zipper/tools.h>
 class compress {
 public:
     static void compressFile(std::vector<std::string> collection);
