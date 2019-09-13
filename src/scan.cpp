@@ -60,9 +60,9 @@ void scan::scan_directory() {
                 }
             }
         }
-        compress::compressFile(dataCollector);
-
     }
+    compress::compressFile(dataCollector);
+
 }
 
 std::string scan::getFileCreationTime(char *path) {

@@ -12,12 +12,14 @@ ExternalProject_Add(zipper
         GIT_REPOSITORY    https://github.com/sebastiandev/zipper
         CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
         )
-
-
-SET(ZIPPER_INCLUDE_DIR ${EXTERNAL_INSTALL_LOCATION}/3rd_party/src/ForexConnectDownload/include)
-SET(ZIPPER_LIB_DIR ${CMAKE_CURRENT_BINARY_DIR}/3rd_party/src/ForexConnectDownload/lib)
+ExternalProject_Add(restclient-cpp
+        GIT_REPOSITORY https://github.com/mrtazz/restclient-cpp
+        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
+        )
 
 ExternalProject_Get_Property(zipper install_dir)
+ExternalProject_Get_Property(restclient-cpp install_dir)
+
 include_directories(include/nlohmann include/PicoSHA2 ${EXTERNAL_INSTALL_LOCATION}/include)
 link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
 add_executable(Implementation_Scanner_
@@ -29,8 +31,8 @@ add_executable(Implementation_Scanner_
         src/scan.h
         src/compress.cpp
         src/compress.h
-)
-add_dependencies(Implementation_Scanner_ zipper)
-target_link_libraries(Implementation_Scanner_ zip pthread  )
-target_link_libraries(Implementation_Scanner_ ${EXTERNAL_INSTALL_LOCATION}/lib/libZipper-static.a)
+        src/serverConnect.cpp src/serverConnect.h src/base64.cpp src/base64.h)
+add_dependencies(Implementation_Scanner_ zipper restclient-cpp)
+target_link_libraries(Implementation_Scanner_ zip pthread z)
+target_link_libraries(Implementation_Scanner_ ${EXTERNAL_INSTALL_LOCATION}/lib/libZipper-static.a ${EXTERNAL_INSTALL_LOCATION}/lib/librestclient-cpp.so)
 

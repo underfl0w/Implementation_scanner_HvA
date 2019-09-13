@@ -14,13 +14,13 @@
     class scan
     {
     public:
-        void load_setting();
+       static void load_setting();
 
     private:
-        void scan_directory();
-        std::string getFileCreationTime(char *path);
+       static void scan_directory();
+       static std::string getFileCreationTime(char *path);
 
-        std::string fileHashing(std::string path);
+       static std::string fileHashing(std::string path);
     };
 
 

@@ -5,11 +5,14 @@
 #ifndef IMPLEMENTATION_SCANNER__COMPRESS_H
 #define IMPLEMENTATION_SCANNER__COMPRESS_H
 #include <stdlib.h>
+#include <sstream>
 #include <fstream>
 #include <zipper/zipper.h>
 #include <zip.h>
 #include <zipper/unzipper.h>
 #include <zipper/tools.h>
+#include "serverConnect.h"
+
 class compress {
 public:
     static void compressFile(std::vector<std::string> collection);
