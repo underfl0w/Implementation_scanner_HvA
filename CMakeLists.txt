@@ -2,6 +2,10 @@
 
 cmake_minimum_required(VERSION 3.13)
 project(Implementation_Scanner_)
+set(CMAKE_CXX_STANDARD 17)
+set(SOURCE_FILES main.cpp)
+find_package(ZLIB)
+
 include(ExternalProject)
 set(EXTERNAL_INSTALL_LOCATION ${CMAKE_BINARY_DIR}/external)
 ExternalProject_Add(zipper
@@ -9,14 +13,11 @@ ExternalProject_Add(zipper
         CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
         )
 
-link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
 
-set(CMAKE_CXX_STANDARD 17)
-set(SOURCE_FILES main.cpp)
-find_package(ZLIB)
+SET(ZIPPER_INCLUDE_DIR ${EXTERNAL_INSTALL_LOCATION}/3rd_party/src/ForexConnectDownload/include)
+SET(ZIPPER_LIB_DIR ${CMAKE_CURRENT_BINARY_DIR}/3rd_party/src/ForexConnectDownload/lib)
 
-
-
+ExternalProject_Get_Property(zipper install_dir)
 include_directories(include/nlohmann include/PicoSHA2 ${EXTERNAL_INSTALL_LOCATION}/include)
 link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
 add_executable(Implementation_Scanner_
@@ -29,7 +30,7 @@ add_executable(Implementation_Scanner_
         src/compress.cpp
         src/compress.h
 )
-add_dependencies(Implementation_Scanner_ zipper ZLIB)
-target_link_libraries(Implementation_Scanner_ zip zip_main pthread)
-
+add_dependencies(Implementation_Scanner_ zipper)
+target_link_libraries(Implementation_Scanner_ zip pthread  )
+target_link_libraries(Implementation_Scanner_ ${EXTERNAL_INSTALL_LOCATION}/lib/libZipper-static.a)
 

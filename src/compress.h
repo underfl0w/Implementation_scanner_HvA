@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include <zipper/zipper.h>
+#include <zip.h>
 #include <zipper/unzipper.h>
 #include <zipper/tools.h>
 class compress {
