@@ -11,7 +11,8 @@
 .idea/
  Prerequisites
 *.d
-
+collection.txt
+ziptest.zip
 # Compiled Object files
 *.slo
 *.lo
