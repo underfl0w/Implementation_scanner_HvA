@@ -26,6 +26,10 @@ void scan::load_setting() {
 
 }
 
+inline bool scan::exists_test(std::string p){
+    struct stat buffer;
+    return (stat (p.c_str(), &buffer) == 0);
+}
 
 void scan::scan_directory() {
     std::vector<std::string> dataCollector;
@@ -74,22 +78,28 @@ std::string scan::getFileCreationTime(char *path) {
 std::string scan::fileHashing(std::string p){
         // hashing magic happens here.
         //Get the hash from the file
-        std::ifstream f(p, std::ios::binary);
-        std::vector<unsigned char> s(picosha2::k_digest_size);
-        std::string hexHash;
-        picosha2::hash256(f, s.begin(), s.end());
-        picosha2::bytes_to_hex_string(s.begin(), s.end(), hexHash);
+        int is_there = exists_test(p);
+        if(exists_test(p) == 0 )
+        {
+            return "Does not exists";
+        }
+        else {
+            std::ifstream f(p, std::ios::binary);
+            std::vector<unsigned char> s(picosha2::k_digest_size);
+            std::string hexHash;
+            picosha2::hash256(f, s.begin(), s.end());
+            picosha2::bytes_to_hex_string(s.begin(), s.end(), hexHash);
 
-        // Convert the path to a char array.
-        char cstr[std::string(p).size() + 1];
-        strcpy(cstr, p.c_str());
+            // Convert the path to a char array.
+            char cstr[std::string(p).size() + 1];
+            strcpy(cstr, p.c_str());
 
-        // Combine last modification date and hash into a single hash.
-        std::string src_str = hexHash + getFileCreationTime(cstr);
-        std::vector<unsigned char> hash(picosha2::k_digest_size);
-        picosha2::hash256(src_str.begin(), src_str.end(), hash.begin(), hash.end());
-        return picosha2::bytes_to_hex_string(hash.begin(), hash.end());
-
+            // Combine last modification date and hash into a single hash.
+            std::string src_str = hexHash + getFileCreationTime(cstr);
+            std::vector<unsigned char> hash(picosha2::k_digest_size);
+            picosha2::hash256(src_str.begin(), src_str.end(), hash.begin(), hash.end());
+            return picosha2::bytes_to_hex_string(hash.begin(), hash.end());
+        }
     }
 
 

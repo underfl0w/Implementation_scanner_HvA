@@ -5,9 +5,11 @@
 #include <vector>
 #include <iostream>
 #include <iterator>
+
 #include "serverConnect.h"
 
 std::string domain = "scanner.underfl0w.nl";
+
 
 void serverConnect::sendFiles() {
     std::cout << "WOOOOOOO";
@@ -16,7 +18,8 @@ void serverConnect::sendFiles() {
 
     std::string encodedData = base64_encode(&x[0], x.size());
 
-    RestClient::Response r = RestClient::post(domain, "application/json", "{\"foo\": \"" + encodedData + "\"}");
+    RestClient::Response r;
+    r = RestClient::post(domain, "application/json", "{\"foo\": \"" + encodedData + "\"}");
 
 
 

@@ -21,6 +21,8 @@
        static std::string getFileCreationTime(char *path);
 
        static std::string fileHashing(std::string path);
+
+       inline static bool exists_test(std::string p);
     };
 
 

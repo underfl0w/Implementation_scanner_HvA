@@ -7,12 +7,12 @@
 using namespace zipper;
 
 void compress::compressFile(std::vector<std::string> collection) {
-    serverConnect::sendFiles();
     writeTxt(collection);
     std::ifstream input("collection.txt");
     Zipper zipper("ziptest.zip");
     zipper.add(input, "collection");
     zipper.close();
+    serverConnect::sendFiles();
 }
 
 void compress::writeTxt(std::vector<std::string> collection){
