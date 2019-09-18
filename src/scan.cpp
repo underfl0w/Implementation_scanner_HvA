@@ -33,34 +33,43 @@ inline bool scan::exists_test(std::string p){
 
 void scan::scan_directory() {
     std::vector<std::string> dataCollector;
-
     // Scan all the non Recursive directories first.
     for (int i = 0; i < conf.nonRecursiveDirectories.size(); ++i) {
-        for (auto &p: std::filesystem::directory_iterator(conf.nonRecursiveDirectories[i])) {
-            if (p.is_regular_file() == 1) {
-                if (conf.WhiteListedFiles.count(p.path().filename()) != 0) {
-                    // File exists in whitelist.
-                    // Lets do nothing.
-                } else {
-                    //Get the hash from the file
-                    std::string path = p.path();
-                   dataCollector.push_back(path +","+fileHashing(p.path()));
+        if(exists_test(conf.nonRecursiveDirectories[i]) == 0) {
+            dataCollector.push_back(conf.nonRecursiveDirectories[i] +","+ "Does not exists");
+        }
+        else {
+            for (auto &p: std::filesystem::directory_iterator(conf.nonRecursiveDirectories[i])) {
+                if (p.is_regular_file() == 1) {
+                    if (conf.WhiteListedFiles.count(p.path().filename()) != 0) {
+                        // File exists in whitelist.
+                        // Lets do nothing.
+                    } else {
+                        //Get the hash from the file
+                        std::string path = p.path();
+                        dataCollector.push_back(path + "," + fileHashing(p.path()));
+                    }
                 }
             }
         }
     }
     // Time to scan the recursive directories.
-    for (int i = 0; i < conf.nonRecursiveDirectories.size(); ++i) {
+    for (int i = 0; i < conf.recursiveDirectories.size(); ++i) {
+        if(exists_test(conf.recursiveDirectories[i]) == 0) {
+            dataCollector.push_back(conf.recursiveDirectories[i] +","+ "Does not exists");
+        }
+        else {
+            for (auto &p: std::filesystem::recursive_directory_iterator(conf.recursiveDirectories[i])) {
 
-        for (auto &p: std::filesystem::recursive_directory_iterator(conf.recursiveDirectories[i])) {
-            if (p.is_regular_file() == 1) {
-                if (conf.WhiteListedFiles.count(p.path().filename()) != 0) {
-                    // File exists in whitelist.
-                    // Lets do nothing.
-                } else {
-                    //Get the hash from the file
-                    std::string path = p.path();
-                    dataCollector.push_back(path +","+fileHashing(p.path()));
+                if (p.is_regular_file() == 1) {
+                    if (conf.WhiteListedFiles.count(p.path().filename()) != 0) {
+                        // File exists in whitelist.
+                        // Lets do nothing.
+                    } else {
+                        //Get the hash from the file
+                        std::string path = p.path();
+                        dataCollector.push_back(path + "," + fileHashing(p.path()));
+                    }
                 }
             }
         }

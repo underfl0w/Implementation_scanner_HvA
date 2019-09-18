@@ -5,7 +5,7 @@
   "directories": {
     "Folders": {
       "Recursive": {
-        "Folders": 2,
+        "Folders": 3,
         "0": {
           "Name": "Big secret folder",
           "path": "/home/user2/topSecret/"
@@ -13,13 +13,21 @@
         "1": {
           "Name": "Little secret folder",
           "path": "/home/user2/littleSecret/"
+        },
+        "2": {
+          "Name": "Little secret folder",
+          "path": "/home/user2/NonExistingRecursive/"
         }
       },
       "NonRecursive": {
-        "Folders": 1,
+        "Folders": 2,
         "0":{
           "Name": "User folder",
           "path": "/home/user2/documents/"
+        },
+        "1":{
+          "Name": "User folder",
+          "path": "/home/user2/nonExisting/"
         }
       }
     }
