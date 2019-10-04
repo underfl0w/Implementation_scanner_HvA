@@ -1,62 +1,61 @@
 {
-  "Server": "127.0.0.1",
-  "Microseconds": 4,
-
-  "directories": {
-    "Folders": {
-      "Recursive": {
-        "Folders": 3,
-        "0": {
-          "Name": "Big secret folder",
-          "path": "/home/user2/topSecret/"
+    "Group": "Linux",
+    "Microseconds": 4,
+    "Server": "127.0.0.1:8000",
+    "Whitelist": {
+        "Files": {
+            "0": {
+                "fileName": "normal.otd"
+            },
+            "1": {
+                "fileName": "juiceList.xlsx"
+            },
+            "2": {
+                "fileName": "Notes.txt"
+            },
+            "3": {
+                "fileName": "note.txt"
+            },
+            "Files": 4
         },
-        "1": {
-          "Name": "Little secret folder",
-          "path": "/home/user2/littleSecret/"
-        },
-        "2": {
-          "Name": "Little secret folder",
-          "path": "/home/user2/NonExistingRecursive/"
+        "Folders": {
+            "0": {
+                "Name": "Fast changing folder",
+                "path": "/home//user2/topSecret/liveStream/",
+                "recursive": "1"
+            },
+            "folders": 1
         }
-      },
-      "NonRecursive": {
-        "Folders": 2,
-        "0":{
-          "Name": "User folder",
-          "path": "/home/user2/documents/"
-        },
-        "1":{
-          "Name": "User folder",
-          "path": "/home/user2/nonExisting/"
-        }
-      }
-    }
-  },
-
-  "Whitelist": {
-    "Folders": {
-      "folders": 1,
-      "0": {
-        "Name": "Fast changing folder",
-        "path": "/home//user2/topSecret/liveStream/",
-        "recursive": "1"
-      }
     },
-
-    "Files": {
-      "Files": 4,
-      "0": {
-        "fileName": "normal.otd"
-      },
-      "1": {
-        "fileName": "juiceList.xlsx"
-      },
-      "2": {
-        "fileName": "Notes.txt"
-      },
-      "3": {
-        "fileName": "note.txt"
-      }
-    }
-  }
+    "directories": {
+        "Folders": {
+            "NonRecursive": {
+                "0": {
+                    "Name": "User folder",
+                    "path": "/home/user2/documents/"
+                },
+                "1": {
+                    "Name": "User folder",
+                    "path": "/home/user2/nonExisting/"
+                },
+                "Folders": 2
+            },
+            "Recursive": {
+                "0": {
+                    "Name": "Big secret folder",
+                    "path": "/home/user2/topSecret/"
+                },
+                "1": {
+                    "Name": "Little secret folder",
+                    "path": "/home/user2/littleSecret/"
+                },
+                "2": {
+                    "Name": "Little secret folder",
+                    "path": "/home/user2/NonExistingRecursive/"
+                },
+                "Folders": 3
+            }
+        }
+    },
+    "uuid": "c4997295-3685-4867-85e6-b61faecb67ba"
 }

@@ -12,10 +12,11 @@
 #include <zipper/unzipper.h>
 #include <zipper/tools.h>
 #include "serverConnect.h"
+#include "config.h"
 
 class compress {
 public:
-    static void compressFile(std::vector<std::string> collection);
+    static void compressFile(std::vector<std::string> collection, Config conf);
 private:
 
     static void writeTxt(std::vector<std::string> collection);

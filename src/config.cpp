@@ -11,7 +11,6 @@ Config::Config(std::string fileName)
 
 Config::~Config()
 {
-    //TODO: write ALL the things
 }
 
 void Config::Reload() {
@@ -21,10 +20,23 @@ void Config::Reload() {
     if (fileStream) // Verify that the file was opened successfully
     {
         json j = json::parse(fileStream);
-        auto wow = j["directories"]["Folders"]["Recursive"]["Folders"].get<int>();
-        Microseconds = wow;
+        server = j["Server"].get<string>();
+        group = j["Group"].get<string>();
+        Microseconds = j["Microseconds"].get<int>();
         loadFolders(j);
+        if (j["uuid"].is_null())
+        {
+            j["uuid"] = "empty";
+            std::ofstream o("config_file.json");
+            o << std::setw(4) << j << std::endl;
+            Reload();
+        }
+        else
+        {
+            uuid = j["uuid"].get<string>();
 
+        }
+        fileStream.close();
     }
     else
     {
@@ -33,6 +45,7 @@ void Config::Reload() {
     }
 
 }
+
 
 // store the data and return the settings
 void Config::loadFolders(json j) {

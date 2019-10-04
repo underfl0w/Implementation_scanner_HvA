@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.13)
 project(Implementation_Scanner_)
 set(CMAKE_CXX_STANDARD 17)
 set(SOURCE_FILES main.cpp)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -fexceptions -g -Wall")
+
 find_package(ZLIB)
 
 include(ExternalProject)
@@ -16,9 +18,14 @@ ExternalProject_Add(restclient-cpp
         GIT_REPOSITORY https://github.com/mrtazz/restclient-cpp
         CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
         )
-
+ExternalProject_Add(crossguid
+        GIT_REPOSITORY https://github.com/graeme-hill/crossguid
+        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
+        )
 ExternalProject_Get_Property(zipper install_dir)
 ExternalProject_Get_Property(restclient-cpp install_dir)
+ExternalProject_Get_Property(crossguid install_dir)
+
 
 include_directories(include/nlohmann include/PicoSHA2 ${EXTERNAL_INSTALL_LOCATION}/include)
 link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
@@ -31,8 +38,8 @@ add_executable(Implementation_Scanner_
         src/scan.h
         src/compress.cpp
         src/compress.h
-        src/serverConnect.cpp src/serverConnect.h src/base64.cpp src/base64.h)
+        src/serverConnect.cpp src/serverConnect.h src/base64.cpp src/base64.h  )
 add_dependencies(Implementation_Scanner_ zipper restclient-cpp)
-target_link_libraries(Implementation_Scanner_ zip pthread z)
-target_link_libraries(Implementation_Scanner_ ${EXTERNAL_INSTALL_LOCATION}/lib/libZipper-static.a ${EXTERNAL_INSTALL_LOCATION}/lib/librestclient-cpp.so)
+target_link_libraries(Implementation_Scanner_ zip pthread z uuid )
+target_link_libraries(Implementation_Scanner_ ${EXTERNAL_INSTALL_LOCATION}/lib/libZipper-static.a ${EXTERNAL_INSTALL_LOCATION}/lib/librestclient-cpp.so ${EXTERNAL_INSTALL_LOCATION}/lib/libcrossguid.a)
 

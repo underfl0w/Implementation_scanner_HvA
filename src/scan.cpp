@@ -7,11 +7,23 @@
 #include <filesystem>
 #include <sys/stat.h>
 
-Config conf("config_file.json");
 
 void scan::load_setting() {
      // Read the json file and store the configuration in memory.
-     scan_directory();
+    Config conf("config_file.json");
+
+    if(conf.uuid == ""){
+        auto myGuid = xg::newGuid().str();
+        std::ifstream fs("config_file.json"); // Load the json settings file from disk
+        json j = json::parse(fs);
+        j["uuid"] = myGuid;
+        std::ofstream o("config_file.json");
+        o << std::setw(4) << j << std::endl;
+        serverConnect::registerToAPI(conf, myGuid);
+        load_setting();
+    }
+
+     scan_directory(conf);
 
 /*     std::map<std::string, int>::iterator it ;
      it = conf.WhiteListedFiles.find("Notes.txt");
@@ -31,8 +43,9 @@ inline bool scan::exists_test(std::string p){
     return (stat (p.c_str(), &buffer) == 0);
 }
 
-void scan::scan_directory() {
+void scan::scan_directory(Config conf) {
     std::vector<std::string> dataCollector;
+    dataCollector.push_back("File,Hash");
     // Scan all the non Recursive directories first.
     for (int i = 0; i < conf.nonRecursiveDirectories.size(); ++i) {
         if(exists_test(conf.nonRecursiveDirectories[i]) == 0) {
@@ -60,7 +73,6 @@ void scan::scan_directory() {
         }
         else {
             for (auto &p: std::filesystem::recursive_directory_iterator(conf.recursiveDirectories[i])) {
-
                 if (p.is_regular_file() == 1) {
                     if (conf.WhiteListedFiles.count(p.path().filename()) != 0) {
                         // File exists in whitelist.
@@ -74,7 +86,7 @@ void scan::scan_directory() {
             }
         }
     }
-    compress::compressFile(dataCollector);
+    compress::compressFile(dataCollector, conf);
 
 }
 

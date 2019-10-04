@@ -10,14 +10,17 @@
 #include "config.h"
 #include "compress.h"
 #include "../include/PicoSHA2/picosha2.h"
+#include <crossguid/guid.hpp>
+#include "serverConnect.h"
+
 
     class scan
     {
     public:
-       static void load_setting();
+       void load_setting();
 
     private:
-       static void scan_directory();
+       static void scan_directory(Config conf);
        static std::string getFileCreationTime(char *path);
 
        static std::string fileHashing(std::string path);

@@ -7,6 +7,8 @@
 #include <cstdlib>
 #include <map>
 #include "../include/nlohmann/json.hpp"
+
+
 using json = nlohmann::json;
 
     class Config
@@ -18,12 +20,12 @@ using json = nlohmann::json;
         void Reload();
 
         int Microseconds;
+        std::string server;
+        std::string group;
         std::vector<std::string> recursiveDirectories;
         std::vector<std::string> nonRecursiveDirectories;
         std::map<std::string,int> WhiteListedFiles;
-        std::vector<std::string> whiteListedFile;
-        std::vector<std::string> whiteListedFolder;
-
+        std::string uuid;
 
     private:
         void loadFolders(json j);
@@ -34,6 +36,7 @@ using json = nlohmann::json;
         std::map<std::string, std::string> stringContents;
         std::map<std::string, int> intBoolContents;
         std::map<std::string, double> doubleContents;
+
     };
 
 

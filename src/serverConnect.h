@@ -9,15 +9,20 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include "config.h"
+#include "../include/uuid.h"
 
 class serverConnect
         {
 public:
-    static void sendFiles();
+    static void sendFiles(Config conf);
+    static std::string registerToAPI(Config conf, std::string uuid);
+
 
 private:
-        int updateConfig();
+        int updateConfig(Config conf);
         static std::vector<BYTE> ReadAllBytes(char const* filename);
+
 };
 
 

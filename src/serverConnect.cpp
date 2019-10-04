@@ -5,29 +5,26 @@
 #include <vector>
 #include <iostream>
 #include <iterator>
-
 #include "serverConnect.h"
 
-std::string domain = "scanner.underfl0w.nl";
+std::string serverConnect::registerToAPI(Config set, std::string uuid){
+    std::string group = "http://" +set.server+ "/group/" +set.group;
 
-
-void serverConnect::sendFiles() {
-    std::cout << "WOOOOOOO";
-
-    std::vector<BYTE> x = ReadAllBytes("ziptest.zip");
-
-    std::string encodedData = base64_encode(&x[0], x.size());
-
-    RestClient::Response r;
-    r = RestClient::post(domain, "application/json", "{\"foo\": \"" + encodedData + "\"}");
-
-
-
+    std::string json = "{\"uuid\":" "\"" +  uuid + "\", \"group\":""\"" + group +"/\"}";
+    RestClient::Response rest;
+    rest = RestClient::post(set.server+"/devices/", "application/json", json );
 
 }
 
-int serverConnect::updateConfig() {
-    return 0;
+void serverConnect::sendFiles(Config set) {
+    std::vector<BYTE> x = ReadAllBytes("ziptest.zip");
+
+    std::string encodedData = base64_encode(&x[0], x.size());
+    std::string device = "http://" + set.server + "/devices/" + set.uuid + "/";
+    std::string json = "{\"zipfile\": \"" + encodedData + "\", \"device\":""\"" + device +"\"}";
+    RestClient::Response r;
+    r = RestClient::post(set.server+"/zipfiles/", "application/json", json);
+
 }
 
 std::vector<BYTE> serverConnect::ReadAllBytes(char const* filename)
